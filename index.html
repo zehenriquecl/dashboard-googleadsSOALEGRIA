@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Pousada Só Alegria — Google Ads</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0a0d16;--card:#11142a;--card2:#181b30;--border:rgba(255,255,255,.07);
+  --blue:#4285F4;--red:#EA4335;--yellow:#FBBC04;--green:#34A853;
+  --text:#e2e8f0;--muted:#6b7fa3;--white:#fff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;
+  background-image:radial-gradient(ellipse 900px 350px at 50% 0%,rgba(66,133,244,.07),transparent 70%);}
+
+/* HEADER */
+header{background:linear-gradient(135deg,#11142a,#181b30);border-bottom:1px solid var(--border);
+  padding:14px 26px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:200;}
+.logo{display:flex;align-items:center;gap:13px;}
+.logo-ico{width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg,#4285F4 0%,#34A853 40%,#FBBC04 70%,#EA4335 100%);
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  box-shadow:0 4px 18px rgba(66,133,244,.35);}
+.logo h1{font-size:17px;font-weight:800;color:#fff;}
+.logo p{font-size:11px;color:var(--muted);margin-top:1px;}
+.hright{display:flex;align-items:center;gap:9px;}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 7px var(--green);animation:pulse 2s infinite;flex-shrink:0;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.lupd{font-size:11px;color:var(--muted);}
+.btn-refresh{background:linear-gradient(135deg,#4285F4,#34A853);border:none;color:#fff;
+  padding:8px 17px;border-radius:9px;cursor:pointer;font-size:12px;font-weight:700;
+  display:flex;align-items:center;gap:5px;transition:opacity .18s;}
+.btn-refresh:hover{opacity:.82;}
+
+/* TABS */
+.tabs{background:var(--card);border-bottom:1px solid var(--border);
+  display:flex;padding:13px 26px 0;gap:2px;overflow-x:auto;}
+.tab{padding:9px 19px;border-radius:8px 8px 0 0;cursor:pointer;font-size:13px;
+  font-weight:600;color:var(--muted);background:transparent;border:none;
+  border-bottom:2px solid transparent;transition:all .18s;white-space:nowrap;}
+.tab:hover{color:var(--text);}
+.tab.on{color:var(--blue);border-bottom-color:var(--blue);background:rgba(66,133,244,.08);}
+
+main{padding:20px 22px;max-width:1700px;margin:0 auto;}
+.pg{display:none;animation:fi .28s;}
+.pg.on{display:block;}
+@keyframes fi{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+/* KPI GRID */
+.kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px;}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:16px 17px;position:relative;overflow:hidden;transition:transform .18s,box-shadow .18s;cursor:default;}
+.kpi:hover{transform:translateY(-3px);box-shadow:0 8px 26px rgba(0,0,0,.45);}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:14px 14px 0 0;}
+.kb::before{background:linear-gradient(90deg,#4285F4,transparent);}
+.kg::before{background:linear-gradient(90deg,#34A853,transparent);}
+.ky::before{background:linear-gradient(90deg,#FBBC04,transparent);}
+.kr::before{background:linear-gradient(90deg,#EA4335,transparent);}
+.kpi-ico{font-size:18px;margin-bottom:6px;}
+.kpi-lbl{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin-bottom:4px;}
+.kpi-val{font-size:22px;font-weight:900;color:#fff;letter-spacing:-.4px;line-height:1.1;}
+.kpi-sub{font-size:10px;color:var(--muted);margin-top:4px;}
+.kpi-bar{height:3px;background:var(--border);border-radius:2px;margin-top:9px;}
+.kpi-fill{height:100%;border-radius:2px;}
+
+/* CHARTS */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:15px;margin-bottom:20px;}
+.cgrid2{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:20px;}
+.cgrid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin-bottom:20px;}
+.cc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:17px 15px;}
+.cc h3{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.55px;margin-bottom:12px;}
+.cw{position:relative;height:210px;}
+.cwtall{position:relative;height:290px;}
+
+/* TABLE */
+.tc{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  overflow:hidden;margin-bottom:20px;}
+.th2{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:7px;border-bottom:1px solid var(--border);}
+.th2 h3{font-size:13px;font-weight:700;color:#fff;}
+.srch{background:var(--card2);border:1px solid var(--border);color:var(--text);
+  padding:6px 10px;border-radius:8px;font-size:12px;outline:none;width:175px;}
+.srch:focus{border-color:var(--blue);}
+.tw{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+thead th{background:var(--card2);padding:8px 11px;text-align:left;color:var(--muted);
+  font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.35px;
+  white-space:nowrap;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;}
+thead th:hover{color:var(--blue);}
+tbody tr{border-bottom:1px solid rgba(255,255,255,.03);transition:background .1s;}
+tbody tr:hover{background:rgba(66,133,244,.065);}
+tbody td{padding:7px 11px;white-space:nowrap;}
+.bd{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;}
+.bb{background:rgba(66,133,244,.18);color:#6ba3ff;}
+.bg2{background:rgba(52,168,83,.18);color:#5ecb7a;}
+.by2{background:rgba(251,188,4,.18);color:#ffd040;}
+.br2{background:rgba(234,67,53,.18);color:#ff7066;}
+
+/* SECTION TITLE */
+.stl{font-size:13px;font-weight:700;color:#fff;margin-bottom:11px;
+  display:flex;align-items:center;gap:6px;padding-bottom:7px;border-bottom:1px solid var(--border);}
+
+/* DEVICES */
+.dg{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-bottom:20px;}
+.dc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:19px;text-align:center;}
+.dc-ico{font-size:30px;margin-bottom:7px;}
+.dc-nm{font-size:12px;font-weight:700;color:#fff;margin-bottom:11px;}
+.dc-m{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.dc-mi{background:var(--card2);border-radius:8px;padding:8px;}
+.dc-ml{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.35px;}
+.dc-mv{font-size:15px;font-weight:800;}
+
+/* RANK BARS */
+.rb-item{display:flex;align-items:center;gap:9px;margin-bottom:8px;}
+.rb-lbl{width:145px;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0;}
+.rb-bg{flex:1;background:var(--border);border-radius:4px;height:7px;overflow:hidden;}
+.rb-fill{height:100%;border-radius:4px;}
+.rb-v{width:70px;text-align:right;font-size:11px;color:var(--muted);flex-shrink:0;}
+
+/* KW BADGE */
+.kwb{display:inline-block;padding:2px 6px;border-radius:5px;font-size:10px;font-weight:600;}
+.exact{background:rgba(66,133,244,.2);color:#7aabff;}
+.near{background:rgba(234,67,53,.15);color:#ff9080;}
+.broad{background:rgba(251,188,4,.18);color:#ffd040;}
+.phrase{background:rgba(52,168,83,.18);color:#5ecb7a;}
+
+/* LOADING */
+#ld{position:fixed;inset:0;background:rgba(10,13,22,.96);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:9999;gap:15px;}
+.spin{width:50px;height:50px;border:4px solid rgba(66,133,244,.18);
+  border-top-color:#4285F4;border-radius:50%;animation:sp .75s linear infinite;}
+@keyframes sp{to{transform:rotate(360deg)}}
+#ld p{color:var(--muted);font-size:13px;text-align:center;}
+#ld.off{display:none;}
+.ebox{background:rgba(234,67,53,.07);border:1px solid rgba(234,67,53,.28);
+  border-radius:14px;padding:26px 22px;text-align:center;max-width:400px;width:90%;}
+.ebox h3{color:#ff7066;font-size:14px;margin-bottom:9px;}
+.ebox p{font-size:12px;color:var(--muted);line-height:1.85;}
+.ebox p b{color:var(--text);}
+.rtbtn{margin-top:16px;padding:9px 24px;background:linear-gradient(135deg,#4285F4,#34A853);
+  border:none;border-radius:9px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;}
+
+@media(max-width:860px){.cgrid2,.cgrid3{grid-template-columns:1fr;}.dg{grid-template-columns:1fr;}}
+@media(max-width:580px){header{padding:10px 14px;}main{padding:12px 14px;}
+  .tabs{padding:9px 14px 0;}.kgrid{grid-template-columns:1fr 1fr;}.kpi-val{font-size:19px;}}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="ld"><div class="spin"></div><p>Carregando dados…</p></div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-ico">📊</div>
+    <div>
+      <h1>Pousada Só Alegria</h1>
+      <p>Google Ads Dashboard · Analytics</p>
+    </div>
+  </div>
+  <div class="hright">
+    <div class="dot"></div>
+    <span class="lupd" id="lupd">—</span>
+    <button class="btn-refresh" onclick="loadAll()">↻ Atualizar</button>
+  </div>
+</header>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab on" onclick="sw('ov',this)">📈 Visão Geral</button>
+  <button class="tab" onclick="sw('kw',this)">🎯 Campanhas & Keywords</button>
+  <button class="tab" onclick="sw('au',this)">📱 Dispositivos & Localização</button>
+</div>
+
+<main>
+
+<!-- ABA 1: VISÃO GERAL -->
+<div class="pg on" id="pg-ov">
+  <div class="kgrid" id="k-main"></div>
+  <div class="cgrid">
+    <div class="cc"><h3>💰 Custo por Dia (R$)</h3><div class="cw"><canvas id="cC"></canvas></div></div>
+    <div class="cc"><h3>👁️ Impressões por Dia</h3><div class="cw"><canvas id="cI"></canvas></div></div>
+    <div class="cc"><h3>🖱️ Cliques por Dia</h3><div class="cw"><canvas id="cCl"></canvas></div></div>
+    <div class="cc"><h3>⚡ Conversões por Dia</h3><div class="cw"><canvas id="cCo"></canvas></div></div>
+    <div class="cc"><h3>📊 CTR (%) por Dia</h3><div class="cw"><canvas id="cCT"></canvas></div></div>
+    <div class="cc"><h3>💵 CPC Médio por Dia</h3><div class="cw"><canvas id="cPC"></canvas></div></div>
+  </div>
+  <div class="tc">
+    <div class="th2"><h3>📋 Detalhamento Diário</h3>
+      <input class="srch" id="s1" placeholder="Filtrar data..." oninput="flt('t1','s1')"/></div>
+    <div class="tw"><table id="t1">
+      <thead><tr>
+        <th onclick="srt('t1',0)">Data ↕</th><th onclick="srt('t1',1)">Custo R$ ↕</th>
+        <th onclick="srt('t1',2)">CTR ↕</th><th onclick="srt('t1',3)">Impressões ↕</th>
+        <th onclick="srt('t1',4)">Cliques ↕</th><th onclick="srt('t1',5)">Conversões ↕</th>
+        <th onclick="srt('t1',6)">Custo/Conv. ↕</th><th onclick="srt('t1',7)">CPC Médio ↕</th>
+        <th onclick="srt('t1',8)">Conv. Rate ↕</th><th onclick="srt('t1',9)">Valor Conv. ↕</th>
+        <th onclick="srt('t1',10)">ROAS ↕</th>
+      </tr></thead><tbody id="b1"></tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- ABA 2: CAMPANHAS & KEYWORDS -->
+<div class="pg" id="pg-kw">
+  <div class="kgrid" id="k-camp"></div>
+  <div class="stl">🎯 Campanha</div>
+  <div class="tc" style="margin-bottom:20px;">
+    <div class="th2"><h3>📋 Campanha</h3></div>
+    <div class="tw"><table id="tc">
+      <thead><tr>
+        <th onclick="srt('tc',0)">Conta ↕</th><th onclick="srt('tc',1)">Campanha ↕</th>
+        <th onclick="srt('tc',2)">Status ↕</th><th onclick="srt('tc',3)">Tipo ↕</th>
+        <th onclick="srt('tc',4)">Cliques ↕</th><th onclick="srt('tc',5)">Conversões ↕</th>
+        <th onclick="srt('tc',6)">CTR ↕</th><th onclick="srt('tc',7)">Custo/Conv. ↕</th>
+      </tr></thead><tbody id="bcamp"></tbody>
+    </table></div>
+  </div>
+  <div class="stl">🔑 Palavras-Chave</div>
+  <div class="cgrid2" style="margin-bottom:20px;">
+    <div class="cc"><h3>🏆 Top 10 Keywords — Cliques</h3><div class="cwtall"><canvas id="cKC"></canvas></div></div>
+    <div class="cc"><h3>⚡ Top 10 Keywords — Conversões</h3><div class="cwtall"><canvas id="cKV"></canvas></div></div>
+  </div>
+  <div class="cgrid2" style="margin-bottom:20px;">
+    <div class="cc"><h3>🎯 Distribuição Match Type</h3><div class="cw"><canvas id="cMT"></canvas></div></div>
+    <div class="cc"><h3>📊 CTR Médio por Match Type</h3><div class="cw"><canvas id="cMC"></canvas></div></div>
+  </div>
+  <div class="tc">
+    <div class="th2"><h3>🔑 Todas as Keywords</h3>
+      <input class="srch" id="s2" placeholder="Buscar keyword..." oninput="flt('tkw','s2')"/></div>
+    <div class="tw"><table id="tkw">
+      <thead><tr>
+        <th onclick="srt('tkw',0)">Keyword ↕</th><th onclick="srt('tkw',1)">Search Term ↕</th>
+        <th onclick="srt('tkw',2)">Match Type ↕</th><th onclick="srt('tkw',3)">Cliques ↕</th>
+        <th onclick="srt('tkw',4)">CTR ↕</th><th onclick="srt('tkw',5)">Conversões ↕</th>
+      </tr></thead><tbody id="bkw"></tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- ABA 3: DISPOSITIVOS & LOCALIZAÇÃO -->
+<div class="pg" id="pg-au">
+  <div class="stl">📱 Desempenho por Dispositivo</div>
+  <div class="dg" id="dg"></div>
+  <div class="cgrid3" style="margin-bottom:20px;">
+    <div class="cc"><h3>🖱️ Cliques por Dispositivo</h3><div class="cw"><canvas id="cDC"></canvas></div></div>
+    <div class="cc"><h3>⚡ Conversões por Dispositivo</h3><div class="cw"><canvas id="cDV"></canvas></div></div>
+    <div class="cc"><h3>👁️ Impressões por Dispositivo</h3><div class="cw"><canvas id="cDI"></canvas></div></div>
+  </div>
+  <div class="stl">🗺️ Localização das Buscas</div>
+  <div class="cgrid2" style="margin-bottom:20px;">
+    <div class="cc"><h3>🏙️ Top 15 Cidades</h3><div id="rCid"></div></div>
+    <div class="cc"><h3>🗺️ Top Estados</h3><div id="rEst"></div></div>
+  </div>
+  <div class="cc" style="margin-bottom:20px;">
+    <h3>📊 Cidades por Estado</h3><div class="cwtall"><canvas id="cLoc"></canvas></div>
+  </div>
+  <div class="tc">
+    <div class="th2"><h3>📋 Todas as Cidades</h3>
+      <input class="srch" id="s3" placeholder="Buscar cidade..." oninput="flt('tloc','s3')"/></div>
+    <div class="tw"><table id="tloc">
+      <thead><tr>
+        <th onclick="srt('tloc',0)">Cidade ↕</th>
+        <th onclick="srt('tloc',1)">Estado ↕</th>
+        <th onclick="srt('tloc',2)">País ↕</th>
+      </tr></thead><tbody id="bloc"></tbody>
+    </table></div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ═══════════════════════════════════
+//  CONFIGURAÇÃO
+// ═══════════════════════════════════
+var SID = '1vdpJGlFcuWuV8mlMisVD00ax1PNUZAt51PrK7a2yAes';
+var SHEETS = {
+  principais:   '0',
+  campanhas:    '2126048848',
+  palavras:     '416339833',
+  dispositivos: '402322677',
+  localizacao:  '412604502'
+};
+
+// ═══════════════════════════════════
+//  ESTADO
+// ═══════════════════════════════════
+var CHARTS = {};
+var PAL = ['#4285F4','#34A853','#FBBC04','#EA4335','#06b6d4',
+           '#8b5cf6','#f97316','#ec4899','#84cc16','#14b8a6','#a78bfa','#fbbf24'];
+function pc(i){ return PAL[i % PAL.length]; }
+
+// ═══════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════
+function n(v){ return parseFloat(String(v||0).replace(/[%\s]/g,'').replace(',','.'))||0; }
+function fI(v){ return Math.round(n(v)).toLocaleString('pt-BR'); }
+function fD(v,d){ d=d===undefined?2:d; return n(v).toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+function fR(v){ return 'R$ '+fD(v); }
+function fP(v){ return fD(v,2)+'%'; }
+
+function sw(id,el){
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
+  el.classList.add('on');
+  document.getElementById('pg-'+id).classList.add('on');
+}
+function flt(tid,sid){
+  var q=document.getElementById(sid).value.toLowerCase();
+  var rows=document.querySelectorAll('#'+tid+' tbody tr');
+  rows.forEach(function(r){r.style.display=r.innerText.toLowerCase().includes(q)?'':'none';});
+}
+var _sd={};
+function srt(tid,col){
+  var tb=document.querySelector('#'+tid+' tbody');
+  var rows=[].slice.call(tb.querySelectorAll('tr'));
+  var k=tid+'_'+col; _sd[k]=!_sd[k];
+  rows.sort(function(a,b){
+    var av=(a.cells[col]&&a.cells[col].innerText)||'';
+    var bv=(b.cells[col]&&b.cells[col].innerText)||'';
+    var an=parseFloat(av.replace(/[^0-9.-]/g,''));
+    var bn=parseFloat(bv.replace(/[^0-9.-]/g,''));
+    if(!isNaN(an)&&!isNaN(bn)) return _sd[k]?an-bn:bn-an;
+    return _sd[k]?av.localeCompare(bv,'pt-BR'):bv.localeCompare(av,'pt-BR');
+  });
+  rows.forEach(function(r){tb.appendChild(r);});
+}
+function kpi(ico,lbl,val,sub,cls,pct,col){
+  return '<div class="kpi '+cls+'">'+
+    '<div class="kpi-ico">'+ico+'</div>'+
+    '<div class="kpi-lbl">'+lbl+'</div>'+
+    '<div class="kpi-val">'+val+'</div>'+
+    '<div class="kpi-sub">'+sub+'</div>'+
+    '<div class="kpi-bar"><div class="kpi-fill" style="width:'+Math.min(pct||60,100)+'%;background:'+col+'"></div></div>'+
+    '</div>';
+}
+function mkChart(id,type,labels,datasets,opts){
+  if(CHARTS[id]){CHARTS[id].destroy();delete CHARTS[id];}
+  var el=document.getElementById(id); if(!el) return;
+  CHARTS[id]=new Chart(el,{type:type,data:{labels:labels,datasets:datasets},options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:'#6b7fa3',font:{size:10},boxWidth:10}},
+      tooltip:{mode:'index',intersect:false,backgroundColor:'rgba(8,11,20,.96)',
+        borderColor:'rgba(66,133,244,.28)',borderWidth:1,titleColor:'#8892b0',
+        bodyColor:'#e2e8f0',padding:10}},
+    scales:(type!=='doughnut'&&type!=='pie')?{
+      x:{ticks:{color:'#6b7fa3',font:{size:9},maxRotation:45},grid:{color:'rgba(255,255,255,.04)'}},
+      y:{ticks:{color:'#6b7fa3',font:{size:9}},grid:{color:'rgba(255,255,255,.04)'}}}:{},
+    indexAxis:(opts&&opts.h)?'y':undefined
+  }});
+}
+function rankBars(cid,items){
+  var mx=Math.max.apply(null,items.map(function(r){return r.v;}))||1;
+  document.getElementById(cid).innerHTML=items.map(function(r,i){
+    return '<div class="rb-item">'+
+      '<div class="rb-lbl" title="'+r.l+'">'+(i+1)+'. '+r.l+'</div>'+
+      '<div class="rb-bg"><div class="rb-fill" style="width:'+Math.max(r.v/mx*100,2).toFixed(1)+'%;background:'+pc(i)+'"></div></div>'+
+      '<div class="rb-v">'+r.f+'</div></div>';
+  }).join('');
+}
+
+// ═══════════════════════════════════
+//  GVIZ — sem CORS, funciona sempre!
+//  Usa a API do Google Sheets Visualization
+//  que retorna JSONP nativo (callback=?)
+// ═══════════════════════════════════
+var _pending = 0;
+var _res = {};
+
+function gvizLoad(name, gid, cb){
+  var cbName = '_gv_'+name+'_'+Date.now();
+  // Limpa tag antiga se existir
+  var old=document.getElementById('sc_'+name);
+  if(old) old.parentNode.removeChild(old);
+
+  window[cbName] = function(data){
+    delete window[cbName];
+    var sc=document.getElementById('sc_'+name);
+    if(sc) sc.parentNode.removeChild(sc);
+    try{
+      var rows=[];
+      var cols=data.table.cols.map(function(c){return c.label;});
+      (data.table.rows||[]).forEach(function(r){
+        var obj={};
+        r.c.forEach(function(cell,i){
+          obj[cols[i]]=(cell&&cell.v!==null&&cell.v!==undefined)?String(cell.v):'';
+        });
+        rows.push(obj);
+      });
+      cb(null,{rows:rows,headers:cols});
+    }catch(e){cb(e);}
+  };
+
+  var url='https://docs.google.com/spreadsheets/d/'+SID+
+    '/gviz/tq?tqx=out:json;responseHandler:'+cbName+'&gid='+gid+'&t='+Date.now();
+  var sc=document.createElement('script');
+  sc.id='sc_'+name;
+  sc.src=url;
+  sc.onerror=function(){
+    delete window[cbName];
+    cb(new Error('Falha ao carregar aba: '+name));
+  };
+  document.head.appendChild(sc);
+}
+
+// ═══════════════════════════════════
+//  RENDER FUNÇÕES
+// ═══════════════════════════════════
+function rMain(p){
+  var r=p.rows;
+  var tC=r.reduce(function(s,x){return s+n(x['Cost (Spend)']);},0);
+  var tI=r.reduce(function(s,x){return s+n(x['Impressions']);},0);
+  var tCl=r.reduce(function(s,x){return s+n(x['Clicks']);},0);
+  var tCo=r.reduce(function(s,x){return s+n(x['Conversions']);},0);
+  var tV=r.reduce(function(s,x){return s+n(x['All conv. value']);},0);
+  var aCTR=tI>0?tCl/tI*100:0;
+  var aCPC=tCl>0?tC/tCl:0;
+  var aCCV=tCo>0?tC/tCo:0;
+  var roas=tC>0?tV/tC:0;
+
+  document.getElementById('k-main').innerHTML=
+    kpi('💰','Custo Total',fR(tC),'Período completo','kpi kb',70,'#4285F4')+
+    kpi('👁️','Impressões',fI(tI),'Total exibições','kpi kg',65,'#34A853')+
+    kpi('🖱️','Cliques',fI(tCl),'Total cliques','kpi ky',65,'#FBBC04')+
+    kpi('⚡','Conversões',fD(tCo,0),'Total conversões','kpi kr',55,'#EA4335')+
+    kpi('📊','CTR Médio',fP(aCTR),'Click-Through Rate','kpi kb',Math.min(aCTR*5,100),'#4285F4')+
+    kpi('💵','CPC Médio',fR(aCPC),'Custo por clique','kpi kg',60,'#34A853')+
+    kpi('🎯','Custo/Conv.',fR(aCCV),'Eficiência','kpi ky',55,'#FBBC04')+
+    kpi('📈','ROAS',fD(roas)+'x','Retorno s/ Gasto','kpi kr',Math.min(roas*25,100),'#EA4335');
+
+  var s=[].concat(r).sort(function(a,b){return a['Day'].localeCompare(b['Day']);});
+  var dl=s.map(function(x){return x['Day'].substring(5).replace('-','/');});
+  mkChart('cC','line',dl,[{label:'Custo R$',data:s.map(function(x){return +n(x['Cost (Spend)']).toFixed(2);}),borderColor:'#4285F4',backgroundColor:'rgba(66,133,244,.1)',tension:.4,fill:true,pointRadius:3}]);
+  mkChart('cI','bar',dl,[{label:'Impressões',data:s.map(function(x){return n(x['Impressions']);}),backgroundColor:'rgba(52,168,83,.7)',borderRadius:3}]);
+  mkChart('cCl','line',dl,[{label:'Cliques',data:s.map(function(x){return n(x['Clicks']);}),borderColor:'#FBBC04',backgroundColor:'rgba(251,188,4,.1)',tension:.4,fill:true,pointRadius:3}]);
+  mkChart('cCo','bar',dl,[{label:'Conversões',data:s.map(function(x){return n(x['Conversions']);}),backgroundColor:'rgba(234,67,53,.7)',borderRadius:3}]);
+  mkChart('cCT','line',dl,[{label:'CTR %',data:s.map(function(x){return +n(x['CTR']).toFixed(2);}),borderColor:'#EA4335',backgroundColor:'rgba(234,67,53,.08)',tension:.4,fill:true,pointRadius:3}]);
+  mkChart('cPC','line',dl,[{label:'CPC R$',data:s.map(function(x){return +n(x['Avg. CPC']).toFixed(2);}),borderColor:'#06b6d4',backgroundColor:'rgba(6,182,212,.07)',tension:.4,fill:true,pointRadius:3}]);
+
+  document.getElementById('b1').innerHTML=s.map(function(x){
+    return '<tr>'+
+      '<td><span class="bd bb">'+x['Day']+'</span></td>'+
+      '<td><span class="bd bg2">'+fR(x['Cost (Spend)'])+'</span></td>'+
+      '<td>'+fP(x['CTR'])+'</td><td>'+fI(x['Impressions'])+'</td>'+
+      '<td>'+fI(x['Clicks'])+'</td>'+
+      '<td><span class="bd by2">'+fD(x['Conversions'],0)+'</span></td>'+
+      '<td>'+fR(x['Cost / conv.'])+'</td><td>'+fR(x['Avg. CPC'])+'</td>'+
+      '<td>'+fP(x['Conv. rate'])+'</td><td>'+fR(x['All conv. value'])+'</td>'+
+      '<td>'+fD(x['All conv. value/cost'])+'x</td></tr>';
+  }).join('');
+}
+
+function rCampKw(pC,pK){
+  var camp=pC.rows, kws=pK.rows;
+  var tCl=camp.reduce(function(s,r){return s+n(r['Clicks']);},0);
+  var tCo=camp.reduce(function(s,r){return s+n(r['Conversions']);},0);
+  document.getElementById('k-camp').innerHTML=
+    kpi('🎯','Campanhas',camp.length,'Ativas','kpi kb',60,'#4285F4')+
+    kpi('🖱️','Cliques',fI(tCl),'Total','kpi kg',70,'#34A853')+
+    kpi('⚡','Conversões',fD(tCo,1),'Total','kpi kr',55,'#EA4335')+
+    kpi('🔑','Keywords',kws.length,'Monitoradas','kpi ky',65,'#FBBC04');
+
+  document.getElementById('bcamp').innerHTML=camp.map(function(r){
+    var st=r['Campaign state']==='Enabled';
+    return '<tr>'+
+      '<td>'+(r['Account Name']||'—')+'</td>'+
+      '<td><b>'+(r['Campaign Name']||'—')+'</b></td>'+
+      '<td><span class="bd '+(st?'bg2':'br2')+'">'+(r['Campaign state']||'—')+'</span></td>'+
+      '<td style="color:var(--muted);font-size:11px">'+(r['Ad Type']||'—')+'</td>'+
+      '<td><span class="bd bb">'+fI(r['Clicks'])+'</span></td>'+
+      '<td><span class="bd by2">'+fD(r['Conversions'],1)+'</span></td>'+
+      '<td>'+fP(r['CTR'])+'</td>'+
+      '<td>'+fR(r['Cost / conv.'])+'</td></tr>';
+  }).join('');
+
+  var byK={};
+  kws.forEach(function(r){
+    var k=r['Keyword']||'?';
+    if(!byK[k]) byK[k]={cl:0,co:0,ctr:[],mt:r['Match type']||''};
+    byK[k].cl+=n(r['Clicks']); byK[k].co+=n(r['Conversions']);
+    var c=n(r['CTR']); if(c>0) byK[k].ctr.push(c);
+  });
+  var kArr=Object.keys(byK).map(function(k){
+    return {kw:k,cl:byK[k].cl,co:byK[k].co,
+      ctr:byK[k].ctr.length?byK[k].ctr.reduce(function(a,b){return a+b;},0)/byK[k].ctr.length:0,
+      mt:byK[k].mt};
+  });
+  var t10cl=[].concat(kArr).sort(function(a,b){return b.cl-a.cl;}).slice(0,10);
+  var t10co=[].concat(kArr).sort(function(a,b){return b.co-a.co;}).slice(0,10);
+  mkChart('cKC','bar',t10cl.map(function(r){return r.kw;}),
+    [{label:'Cliques',data:t10cl.map(function(r){return r.cl;}),backgroundColor:t10cl.map(function(_,i){return pc(i);}),borderRadius:4}],{h:true});
+  mkChart('cKV','bar',t10co.map(function(r){return r.kw;}),
+    [{label:'Conversões',data:t10co.map(function(r){return +r.co.toFixed(1);}),backgroundColor:t10co.map(function(_,i){return pc(i);}),borderRadius:4}],{h:true});
+
+  var mt={};
+  kws.forEach(function(r){
+    var m=r['Match type']||'Other';
+    if(!mt[m]) mt[m]={cl:0,ctr:[]};
+    mt[m].cl+=n(r['Clicks']);
+    var c=n(r['CTR']); if(c>0) mt[m].ctr.push(c);
+  });
+  var mk=Object.keys(mt);
+  var mc={'EXACT':'#4285F4','NEAR_EXACT':'#EA4335','BROAD':'#FBBC04','PHRASE':'#34A853','NEAR_BROAD':'#f97316','NEAR_PHRASE':'#8b5cf6'};
+  var mCol=mk.map(function(m){return mc[m]||pc(mk.indexOf(m));});
+  mkChart('cMT','doughnut',mk,[{data:mk.map(function(m){return mt[m].cl;}),backgroundColor:mCol,borderWidth:1,borderColor:'#11142a'}]);
+  mkChart('cMC','bar',mk,[{label:'CTR % médio',
+    data:mk.map(function(m){return mt[m].ctr.length?+(mt[m].ctr.reduce(function(a,b){return a+b;},0)/mt[m].ctr.length).toFixed(2):0;}),
+    backgroundColor:mCol,borderRadius:4}]);
+
+  document.getElementById('bkw').innerHTML=[].concat(kws).sort(function(a,b){return n(b['Clicks'])-n(a['Clicks']);}).map(function(r){
+    var mt2=r['Match type']||'';
+    var cl=(mt2==='EXACT')?'exact':(mt2.includes('NEAR'))?'near':(mt2==='BROAD')?'broad':'phrase';
+    return '<tr><td><b>'+(r['Keyword']||'—')+'</b></td>'+
+      '<td style="color:var(--muted)">'+(r['Search term']||'—')+'</td>'+
+      '<td><span class="kwb '+cl+'">'+mt2+'</span></td>'+
+      '<td><span class="bd bb">'+fI(r['Clicks'])+'</span></td>'+
+      '<td>'+fP(r['CTR'])+'</td>'+
+      '<td><span class="bd by2">'+fD(r['Conversions'],1)+'</span></td></tr>';
+  }).join('');
+}
+
+function rAud(pD,pL){
+  var devs=pD.rows, locs=pL.rows;
+  var dIco={'Computers':'💻','Mobile devices with full browsers':'📱','Tablets with full browsers':'🖥️'};
+  var dLbl={'Computers':'Computadores','Mobile devices with full browsers':'Mobile','Tablets with full browsers':'Tablets'};
+  var dCol=['#4285F4','#34A853','#FBBC04'];
+
+  document.getElementById('dg').innerHTML=devs.map(function(r,i){
+    var cl=n(r['Clicks']),co=n(r['Conversions']);
+    return '<div class="dc">'+
+      '<div class="dc-ico">'+(dIco[r['Device']]||'🖥️')+'</div>'+
+      '<div class="dc-nm">'+(dLbl[r['Device']]||r['Device'])+'</div>'+
+      '<div class="dc-m">'+
+        '<div class="dc-mi"><div class="dc-ml">Cliques</div><div class="dc-mv" style="color:'+dCol[i]+'">'+fI(cl)+'</div></div>'+
+        '<div class="dc-mi"><div class="dc-ml">Conversões</div><div class="dc-mv" style="color:'+dCol[i]+'">'+fD(co,0)+'</div></div>'+
+        '<div class="dc-mi"><div class="dc-ml">Impressões</div><div class="dc-mv" style="color:'+dCol[i]+'">'+fI(r['Impressions'])+'</div></div>'+
+        '<div class="dc-mi"><div class="dc-ml">Conv. Rate</div><div class="dc-mv" style="color:'+dCol[i]+'">'+(cl>0?fP(co/cl*100):'0%')+'</div></div>'+
+      '</div></div>';
+  }).join('');
+
+  var dLbls=devs.map(function(r){return dLbl[r['Device']]||r['Device'];});
+  mkChart('cDC','doughnut',dLbls,[{data:devs.map(function(r){return n(r['Clicks']);}),backgroundColor:dCol,borderWidth:1,borderColor:'#11142a'}]);
+  mkChart('cDV','doughnut',dLbls,[{data:devs.map(function(r){return n(r['Conversions']);}),backgroundColor:dCol,borderWidth:1,borderColor:'#11142a'}]);
+  mkChart('cDI','doughnut',dLbls,[{data:devs.map(function(r){return n(r['Impressions']);}),backgroundColor:dCol,borderWidth:1,borderColor:'#11142a'}]);
+
+  var byE={};
+  locs.forEach(function(r){var e=r['Region (Geographic)']||'?'; byE[e]=(byE[e]||0)+1;});
+  var eArr=Object.keys(byE).map(function(k){return {l:k,v:byE[k],f:byE[k]+' cidades'};}).sort(function(a,b){return b.v-a.v;});
+
+  rankBars('rCid',locs.slice(0,15).map(function(r,i){return {l:r['City (Geographic)']||'—',v:locs.length-i,f:r['Region (Geographic)']||'—'};}));
+  rankBars('rEst',eArr.slice(0,10));
+
+  var t12=eArr.slice(0,12);
+  mkChart('cLoc','bar',t12.map(function(r){return r.l.replace('State of ','');}),
+    [{label:'Nº Cidades',data:t12.map(function(r){return r.v;}),backgroundColor:t12.map(function(_,i){return pc(i);}),borderRadius:4}],{h:true});
+
+  document.getElementById('bloc').innerHTML=locs.map(function(r){
+    return '<tr><td><b>'+(r['City (Geographic)']||'—')+'</b></td>'+
+      '<td>'+(r['Region (Geographic)']||'—')+'</td>'+
+      '<td>'+(r['Country (Geographic)']||'—')+'</td></tr>';
+  }).join('');
+}
+
+// ═══════════════════════════════════
+//  LOADING OVERLAY
+// ═══════════════════════════════════
+function ldShow(msg){
+  var el=document.getElementById('ld');
+  el.classList.remove('off');
+  el.innerHTML='<div class="spin"></div><p>'+(msg||'Carregando…')+'</p>';
+}
+function ldErr(msgs){
+  var el=document.getElementById('ld');
+  el.classList.remove('off');
+  el.innerHTML='<div class="ebox">'+
+    '<h3>⚠️ Erro ao carregar dados</h3>'+
+    '<p>'+msgs+'</p>'+
+    '<p style="margin-top:10px">Certifique-se de que a planilha está configurada como:<br>'+
+    '<b>Compartilhar → Qualquer pessoa com o link → Visualizador</b></p>'+
+    '<button class="rtbtn" onclick="loadAll()">🔄 Tentar novamente</button>'+
+    '</div>';
+}
+
+// ═══════════════════════════════════
+//  LOAD ALL — usa gviz (sem CORS!)
+// ═══════════════════════════════════
+var _pend=0, _res2={}, _errs=[];
+function loadAll(){
+  ldShow('Carregando Google Ads — Pousada Só Alegria…');
+  _res2={}; _errs=[];
+  var keys=Object.keys(SHEETS);
+  _pend=keys.length;
+  keys.forEach(function(name){
+    gvizLoad(name, SHEETS[name], function(err,data){
+      if(err){ _errs.push(name+': '+err.message); }
+      else { _res2[name]=data; }
+      _pend--;
+      if(_pend===0) onDone();
+    });
+  });
+}
+function onDone(){
+  if(_errs.length===Object.keys(SHEETS).length){
+    ldErr(_errs.map(function(e){return '<b>'+e+'</b>';}).join('<br>'));
+    return;
+  }
+  try{
+    if(_res2.principais) rMain(_res2.principais);
+    if(_res2.campanhas&&_res2.palavras) rCampKw(_res2.campanhas,_res2.palavras);
+    if(_res2.dispositivos&&_res2.localizacao) rAud(_res2.dispositivos,_res2.localizacao);
+    var now=new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'});
+    document.getElementById('lupd').textContent='Atualizado: '+now;
+    document.getElementById('ld').classList.add('off');
+  }catch(e){
+    ldErr('Erro ao renderizar: '+e.message);
+  }
+}
+
+// Inicia
+loadAll();
+// Auto-refresh 30min
+setInterval(loadAll, 30*60*1000);
+</script>
+</body>
+</html>
